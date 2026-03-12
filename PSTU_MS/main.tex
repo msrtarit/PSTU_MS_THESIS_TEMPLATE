@@ -1,0 +1,70 @@
+\documentclass[12pt,notitlepage,oneside]{report}
+\usepackage{pstucsepgthesis}
+\usepackage{textcomp}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{csquotes}
+\usepackage{comment}
+%\usepackage{indentfirst}
+\usepackage{hyperref}
+\hypersetup{
+   hidelinks
+}
+% Uncomment the following line if you need to write in Bangla
+% \usepackage{usebangla}
+
+% Uncomment any of the following lines should you need to
+% suppress the LOF, or LOT or LOA
+
+% \suppresslistoffigures 
+% \suppresslistoftables
+
+\suppresslistofalgorithms
+
+%%% setting indentation 
+%\setlength\parindent{24pt}
+
+
+% For index creation, comment this out if you do not want to create an
+% index 
+\makeindex[intoc]
+% --- APA style references ---
+\usepackage[style=apa,backend=biber,natbib=true,sorting=nyt]{biblatex}
+\DeclareLanguageMapping{english}{english-apa}
+\addbibresource{pstucsepgthesis.bib}  % <--- your actual file name
+
+
+\begin{document}
+\startingmaterials
+
+% --- Switch to Chapter numbering ---
+\cleardoublepage
+\pagestyle{fancy}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% Edit as needed below this line
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Chapter-1 
+\input{chapter1.tex}
+% Chapter-2 
+\input{chapter2.tex}
+% Chapter-3 
+\input{chapter3.tex}
+% Chapter-4
+\input{chapter4.tex}
+% Chapter-5
+\input{chapter5.tex}
+% Chapter-6
+\input{chapter6.tex}
+% Chapter-7
+\input{chapter7.tex}
+% Bibliographies and appendices
+%\bibliographystyle{IEEEtran}
+
+\printbibliography[heading=bibintoc,title={References}]
+
+%\renewcommand\pubname{Publication List}
+
+\end{document}

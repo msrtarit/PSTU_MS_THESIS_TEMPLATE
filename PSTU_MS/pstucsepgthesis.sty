@@ -1,0 +1,354 @@
+% You should not change anything in this file unless you really know
+% what you are doing.
+\RequirePackage{graphicx}
+\RequirePackage{algorithmic}
+\RequirePackage{algorithm}
+\RequirePackage{amsthm}
+\RequirePackage{amsmath}
+\RequirePackage[a4paper,left=1.5in,right=1.0in,top=1in,bottom=1in]{geometry}
+% --- Fonts: Times New Roman family ---
+\RequirePackage{newtxtext,newtxmath} % pdfLaTeX option
+\RequirePackage{times}
+\RequirePackage{url}
+\RequirePackage{listings}
+\RequirePackage[final, colorlinks, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+
+% Prevent math from being upcased
+% http://tex.stackexchange.com/questions/46525/preventing-makeuppercase-from-affecting-mathematics
+\RequirePackage{textcase}
+
+% Definition macros
+\def\cse{Department of Computer Science and Information Technology}
+\def\pstu{Patuakhali Science and Technology University}
+
+% sets spacing between paragraphs
+%\parskip 2.5mm           
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{1.27cm}
+
+% Clever referencing
+\RequirePackage{cleveref}
+
+% Caption setup
+\RequirePackage{caption} 
+\captionsetup[table]{skip=2.50mm}
+
+% 1.5 spacing
+\RequirePackage{setspace}
+\onehalfspacing
+\RequirePackage{xspace}
+
+% sets leading space for paragraphs
+%\parindent 0.0mm		  
+
+
+% Read and store student names in DB
+\RequirePackage{datatool}
+\DTLloaddb[noheader]{ThesisStudents}{parameters/students.txt}
+\DTLloaddb[noheader]{Supervisor}{parameters/supervisor.txt}
+\DTLloaddb[noheader]{CoSupervisor}{parameters/cosupervisor.txt}
+\DTLloaddb[noheader]{Chairman}{parameters/chairman.txt}
+
+% Thesis parameters
+\def\thesistitle{\input{parameters/thesistitle.txt}\unskip}
+\def\thesisdate{\input{parameters/thesisdate.txt}\unskip}
+
+% Thesis title page 
+\def\thesistitlepage{
+  \thispagestyle{empty}
+  \begingroup
+  \centering
+    % ---------- Title ----------
+    \textbf{{\LARGE\begin{spacing}{1.2}\thesistitle\end{spacing}}}
+    \vfill
+
+    % ---------- “A Thesis” ----------
+    {\large A Thesis\par}
+    \vfill
+
+    % ---------- Submitted to … ----------
+    \begin{spacing}{1.0}
+    {\large
+      Submitted to\\
+      Patuakhali Science and Technology University, Patuakhali\\
+      In Partial Fulfillment of the Requirements\\
+      for the Degree of Master of Science\\
+      in\\
+      Computer Science and Information Technology\par
+    }
+    \end{spacing}
+    \vfill
+
+    % ---------- Student Info ----------
+    {\large By\par}
+    \DTLforeach{ThesisStudents}{\StudentName=Column1,\StudentRoll=Column2,\StudentReg=Column3}{%
+      {\large\bfseries \StudentName}\\[0.3em]
+      {\large Roll/ID No: \StudentRoll}\\[0.3em]
+      {\large Registration No: \StudentReg}
+    }
+
+    \vfill
+    \includegraphics[width=35mm]{figures/LogoPSTU.png}\\
+    \textbf{\cse}\\
+    \textbf{\large\pstu}\\
+    \smallskip
+    Patuakhali, Bangladesh\\
+    \medskip
+    \thesisdate\par
+  \endgroup
+}
+
+
+% Thesis approval page page 
+
+% -------------------------------------------------
+%  Approval page – pixel-perfect match to specimen
+% -------------------------------------------------
+\def\thesisapprovalpage{%
+  \thispagestyle{empty}
+  \vspace*{\fill}                     % start from top, push content down
+
+  \begingroup
+  \centering
+    % ---------- Title (1.2 spaced) ----------
+    {\LARGE\bfseries\begin{spacing}{1.2}\thesistitle\end{spacing}\par}
+    \vfill
+
+    % ---------- “A Thesis” ----------
+    {\large A Thesis\par}
+    \vfill
+    % ---------- Submitted to … (with dotted lines) ----------
+    \begin{spacing}{1.0}
+    {\large
+      Submitted to\\
+      Patuakhali Science and Technology University, Patuakhali\\
+      In Partial Fulfillment of the Requirements\\
+      for the Degree of Master of Science\\
+      in\\
+      Computer Science and Information Technology\par
+    }
+    \end{spacing}
+    \vfill
+
+    % ---------- Approved as to style … ----------
+    {\large Approved as to style and contents by:}\par
+    \vspace{1.5em}
+ % Spacing before signature lines (needed for visual clarity)
+
+    \begin{singlespace}
+    % ---------- Supervisor / Co-Supervisor (side-by-side) ----------
+    \makebox[\textwidth][c]{%
+      \begin{tabular}{@{}c@{}}
+        \rule{4.5cm}{0.4pt}\\[0.2em]
+        \DTLforeach{Supervisor}{\SupName=Column1,\SupDesig=Column2}{{\large \SupName}\\[0.1em] \SupDesig}\\[0.1em]
+        \textbf{Supervisor}
+      \end{tabular}%
+      \hfill
+      \begin{tabular}{@{}c@{}}
+        \rule{4.5cm}{0.4pt}\\[0.2em]
+        \DTLforeach{CoSupervisor}{\CoSupName=Column1,\CoSupDesig=Column2}{{\large \CoSupName}\\[0.1em] \CoSupDesig}\\[0.1em]
+        \textbf{Co-Supervisor}
+      \end{tabular}%
+    }%
+    \vspace{1.0em}
+
+    % ---------- Chairman – perfectly centered ----------
+    \makebox[\textwidth][c]{%
+      \begin{tabular}{@{}c@{}}
+        \rule{5cm}{0.4pt}\\[0.2em]
+        \DTLforeach{Chairman}{\ChairName=Column1,\ChairDesig=Column2}{{\large \ChairName}\\[0.1em] \ChairDesig}\\[0.1em]
+        \textbf{Chairman, Defense Committee}\\[0.1em]
+        and\\[0.1em]
+        \textbf{Chairman, Department of CSIT}\\
+      \end{tabular}%
+    }%
+    \end{singlespace}
+
+    \vfill
+    \thesisdate\par
+  \endgroup
+}
+
+
+
+
+% Thesis candidates' declaration
+\def\thesiscandidatesdeclaration{
+  \begingroup
+  \begingroup
+  \centering
+    \textbf{{\Large DECLARATION}}\par
+  \endgroup
+  \addcontentsline{toc}{chapter}{\textbf{\normalsize{\emph{DECLARATION}}}}
+  \vspace*{\stretch{.2}}
+    
+  I declare that the thesis hereby submitted by me for the Master degree at the Patuakhali Science and Technology University is my own independent work and has not previously been submitted by me at another university/faculty for any degree.
+
+
+  \DTLforeach{ThesisStudents}{\StudentName=Column1,\StudentID=Column2}{
+    \vspace*{25.0mm}
+    \makebox[0.4\textwidth][l]{Date: \makebox[1.5in]{\dotfill}} \hfill
+    \begin{minipage}[t]{0.4\textwidth}
+      \centering
+      Signature\\[1.5em]
+      \makebox[2in]{\dotfill}\\[0.2em]
+      (\StudentName)\par
+    \end{minipage}\par}
+  
+  \vspace*{\stretch{2}}
+  \endgroup
+}
+
+% Acknowledgement
+\def\thesisacknowledgement{%
+  \begingroup
+  \centering
+    \textbf{{\Large ACKNOWLEDGEMENT}}\\[60pt]
+  \endgroup
+  \addcontentsline{toc}{chapter}{\textbf{\normalsize{\emph{ACKNOWLEDGEMENT}}}}
+
+  \@input {inputs/acknowledgement.tex}
+
+  \vspace*{20.0mm}
+
+  \DTLforeach{ThesisStudents}{\StudentName=Column1,\StudentID=Column2}{
+    \vspace*{5.0mm}
+    \begin{minipage}[t]{0.4\linewidth}
+     Patuakhali, Bangladesh\par
+  \end{minipage}%
+  \hfill
+    \begin{minipage}[t]{0.4\textwidth}
+    \raggedleft
+      \StudentName\par
+    \end{minipage}\par}
+  
+  \vspace*{\stretch{2}}
+}
+
+%abbreviation, not working yet
+ %\addcontentsline{toc}{chapter}{\textbf{\normalsize{\emph{LIST OF ABBREVIATIONS}}}}
+
+ % \@input {inputs/abbreviation}
+
+% Abstract
+\def\thesisabstract{%
+  \renewcommand{\abstractname}{\textbf{{\Large ABSTRACT}}}
+  \addcontentsline{toc}{chapter}
+  {\textbf{\normalsize{\emph{ABSTRACT}}}}
+  \begin{abstract}\thispagestyle{plain}
+    \@input {inputs/abstract.tex}
+  \end{abstract}
+}
+
+% Inclusion of lof and lot in toc
+\RequirePackage[nottoc,notbib]{tocbibind}
+\RequirePackage{tocloft}
+
+
+\RequirePackage{etoolbox}
+\newtoggle{suppress@lof}
+\newtoggle{suppress@lot}
+\newtoggle{suppress@lo@}
+
+\def\suppresslistoffigures{\global\toggletrue{suppress@lof}}
+\def\suppresslistoftables{\global\toggletrue{suppress@lot}}
+\def\suppresslistofalgorithms{\global\toggletrue{suppress@lo@}}
+
+
+\def\listsandtoc{
+  % Table of contents
+  \tableofcontents
+
+  % List of figures, if not suppressed
+  \iftoggle{suppress@lof}{\relax}{\cleardoublepage\listoffigures}
+
+  % List of tables, if not suppressed
+  \iftoggle{suppress@lot}{\relax}{\cleardoublepage\listoftables}
+
+  % List of algorithms, if not suppressed
+  \iftoggle{suppress@lo@}{\relax}{\cleardoublepage
+    \addcontentsline{toc}{chapter}{\listalgorithmname}
+    \listofalgorithms}
+}
+
+% Starting materials
+\def\startingmaterials{
+  \pagenumbering{Alph}
+  \thesistitlepage
+
+  \clearpage
+  \pagenumbering{roman}
+  \setcounter{page}{1}
+  \thesisapprovalpage
+  
+  \clearpage
+  \thesiscandidatesdeclaration
+
+%  \clearpage
+%  \thesiscertificationpage
+
+  \clearpage
+  \thesisacknowledgement
+
+  \clearpage
+  \listsandtoc
+  
+  \clearpage
+  \thesisabstract
+}
+
+
+% Fancy page style
+\RequirePackage{fancyhdr}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.250mm}
+\renewcommand{\footrulewidth}{0.0mm}
+\fancyheadoffset[R]{0.075\textwidth}
+\fancyhead[L]{\slshape \rightmark}
+\fancyhead[R]{\textbf{\thepage}}
+
+% Starting materials
+% Removal of AtBeginDocument to prevent unintended generation order.
+% User will call \st@rtingm@teri@ls or individual pages in main.tex.
+
+% For consecutive numbering (Figure 1, Figure 2...)
+\RequirePackage{chngcntr}
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+
+% For index creation
+\RequirePackage{imakeidx}
+
+% Version information at the end
+\RequirePackage[nofancy,notoday]{rcsinfo}
+\rcsInfo $Id: pstucsepgthesis.sty,v 1.4 2017/09/29 13:23:11 masroor Exp $
+\RequirePackage{datetime}
+
+\AtEndDocument{%
+  \clearpage
+  \pagestyle{plain}
+  
+  \begingroup
+  
+  \flushright
+
+  \vspace*{0.0mm}
+  \vfill\vfill\vfill\vfill\vfill
+  \sffamily
+
+  Generated using Postgraduate Thesis \LaTeX\xspace Template,
+  Version~\rcsInfoRevision , Created according to the rules of pgs PSTU. \cse, \pstu, Patuakhali, Bangladesh.
+
+  \bigskip
+
+  \settimeformat{ampmtime}
+
+  This thesis was generated on~\today\xspace at~\currenttime.
+
+  \vfill
+
+  \endgroup}
+
+
+
+\endinput
